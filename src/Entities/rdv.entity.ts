@@ -9,6 +9,9 @@ export class Rdv {
 
     @Column()
     titreRdv: string;
+    
+    @Column()
+    medecinRdv: string;
 
     @Column()
     dateRdv: Date;
@@ -18,6 +21,8 @@ export class Rdv {
 
     @Column()
     lieuRdv: string;
+
+    
 
     @ManyToOne(() => User, user => user.rdvs)
   user: User;
