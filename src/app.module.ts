@@ -4,10 +4,10 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './Entities/user.entity';
-import { JwtModule } from '@nestjs/jwt';
-import { MoncompteModule } from './moncompte/moncompte.module';
 import { RdvModule } from './rdv/rdv.module';
 import { PatientModule } from './patient/patient.module';
+import { Rdv } from './Entities/rdv.entity';
+import { Patient } from './Entities/patient.entity';
 
 @Module({
   imports: [
@@ -19,10 +19,9 @@ import { PatientModule } from './patient/patient.module';
       username: 'root',
       password: 'root',
       database: 'gestion_rdv',
-      entities: [User],
+      entities: [User, Rdv, Patient],
       synchronize: true,
     }),
-    MoncompteModule,
     RdvModule,
     PatientModule,
   ],

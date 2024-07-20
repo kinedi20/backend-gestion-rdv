@@ -18,6 +18,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column()
+  profession: string
+
   @OneToMany(() => Rdv, rdv => rdv.user)
   rdvs: Rdv[];
 
