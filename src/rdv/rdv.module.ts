@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RdvService } from './rdv.service';
 import { RdvController } from './rdv.controller';
-import { Rdv } from 'src/Entities/rdv.entity';
+import { Rdv } from 'src/rdv/rdv.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -9,4 +9,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [RdvService],
   controllers: [RdvController]
 })
-export class RdvModule {}
+export class RdvModule { }

@@ -1,24 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Rdv } from 'src/Entities/rdv.entity';
 import { Repository } from 'typeorm';
+import { Rdv } from './rdv.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class RdvService {
   constructor(
     @InjectRepository(Rdv)
-    private rdvRepository: Repository<Rdv>,
+    private rdvRepository: Repository<Rdv>
   ) {}
 
   findAll(): Promise<Rdv[]> {
-    return this.rdvRepository.find();
+    return this.rdvRepository.find({
+      relations: ['patient', 'medecin'],
+    });
   }
 
   findOne(id: number): Promise<Rdv> {
-    return this.rdvRepository.findOneBy({ idRdv: id });
+    return this.rdvRepository.findOneBy({id});
   }
 
-  async create_rdv(rdv: Rdv): Promise<{ message: string; success: boolean }> {
+
+  async create(rdv: Rdv): Promise<{ message: string; success: boolean }> {
+
     try {
       const nouveau_rdv = await this.rdvRepository.create(rdv);
       console.log(rdv);
@@ -26,7 +30,7 @@ export class RdvService {
       this.rdvRepository.save(nouveau_rdv);
 
       return {
-        message: 'Votre rendez-vous a été bien prise en compte',
+        message: 'Votre rendez-vous a été enregistré avec succès',
         success: true,
       };
     } catch (error) {
@@ -36,5 +40,15 @@ export class RdvService {
         success: false,
       };
     }
+   
   }
+
+  async remove(id: number): Promise<void> {
+    await this.rdvRepository.delete(id);
+  }
+
+  async update(id: number, rdv: Rdv): Promise<Rdv> {
+    await this.rdvRepository.update(id, rdv);
+    return this.findOne(id);
+}
 }

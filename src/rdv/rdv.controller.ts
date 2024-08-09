@@ -1,24 +1,36 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards } from '@nestjs/common';
 import { RdvService } from './rdv.service';
-import { Rdv } from 'src/Entities/rdv.entity';
+import { Rdv } from './rdv.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@Controller('rdv')
+@Controller('rdvs')
+// @UseGuards(JwtAuthGuard)
+
 export class RdvController {
+  constructor(private readonly rdvService: RdvService) {}
 
-    constructor(private rdvService : RdvService){}
+  @Get()
+  findAll(): Promise<Rdv[]> {
+    return this.rdvService.findAll();
+  }
 
-    //liste des rendez vous
+  @Get(':id')
+  findOne(@Param('id') id: number): Promise<Rdv> {
+    return this.rdvService.findOne(id);
+  }
 
-    @Get()
-    findAll(): Promise<Rdv[]> {
-      return this.rdvService.findAll();
-    }
+  @Post()
+  create(@Body() rdv: Rdv) {
+    return this.rdvService.create(rdv);
+  }
 
-    //Ajouter nouveau rendez-vous
-    @Post()
-    async create_rdv(@Body() rdv: Rdv) {
+  @Put(':id')
+  update(@Param('id') id: number, @Body() rdv: Rdv): Promise<Rdv> {
+    return this.rdvService.update(id, rdv);
+  }
 
-      return this.rdvService.create_rdv(rdv);
-      }
-    
+  @Delete(':id')
+  remove(@Param('id') id: number): Promise<void> {
+    return this.rdvService.remove(id);
+  }
 }
